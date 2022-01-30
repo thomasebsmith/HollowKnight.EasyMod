@@ -1,0 +1,44 @@
+#!/bin/sh
+
+. ./scripts/env || exit 1
+
+normalize() {
+  _return="$(cd "$1" && pwd)" || return 1
+}
+
+usage() {
+  echo 'Usage: ./build <assembly_dir> <deploy_dir>'
+}
+
+if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
+  >&2 usage
+  exit 1
+fi
+
+if [ ! -d "$1" ]; then
+  >&2 echo "Invalid assembly_dir: $1"
+  >&2 usage
+  exit 1
+fi
+
+BUILD_CONFIG='Debug'
+if [ "$#" -eq 2 ]; then
+  BUILD_CONFIG='Release'
+  if [ ! -d "$2" ]; then
+    >&2 echo "Invalid deploy dir: $2"
+    >&2 usage
+    exit 1
+  fi
+fi
+
+BUILD_OUTPUT_DIR="./$MOD_NAME/bin/$BUILD_CONFIG/$TARGET_FRAMEWORK"
+
+export MOD_ASSEMBLY_DIR="$(cd "$1" && pwd)" || exit 1
+dotnet build -c "$BUILD_CONFIG" || exit 1
+
+if [ "$#" -eq 2 ]; then
+  MOD_DLL="$BUILD_OUTPUT_DIR/$MOD_NAME.dll"
+  MOD_PDB="$BUILD_OUTPUT_DIR/$MOD_NAME.pdb"
+  mkdir -p "$2/$MOD_NAME" || exit 1
+  cp "$MOD_DLL" "$MOD_PDB" "$2/$MOD_NAME/" || exit 1
+fi

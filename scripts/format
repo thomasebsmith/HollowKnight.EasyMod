@@ -1,0 +1,25 @@
+#!/bin/sh
+
+. ./scripts/env
+
+usage() {
+  echo 'Usage: ./format [--verify]'
+}
+
+if [ "$#" -gt 1 ]; then
+  >&2 usage
+  exit 1
+fi
+
+if [ "$#" -eq 1 ]; then
+  if [ "$1" = '--verify' ]; then
+    dotnet format --verify-no-changes
+    exit "$?"
+  else
+    >&2 usage
+    exit 1
+  fi
+fi
+
+dotnet format
+exit "$?"

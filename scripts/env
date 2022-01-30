@@ -1,0 +1,4 @@
+#!/bin/sh
+
+export MOD_NAME='EasyMod'
+export TARGET_FRAMEWORK='net472'

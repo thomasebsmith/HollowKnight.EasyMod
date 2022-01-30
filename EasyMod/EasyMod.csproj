@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(TARGET_FRAMEWORK)</TargetFramework>
+    <LangVersion>10.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <PathMap>$(MSBuildProjectDirectory)=.</PathMap>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies"
+      Version="1.0.2" PrivateAssets="All" />
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(MOD_ASSEMBLY_DIR)\Assembly-CSharp.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

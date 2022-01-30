@@ -1,0 +1,36 @@
+name: Build
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 6.0.x
+
+    - name: Download modding API
+      env:
+        MODDING_API_URL: ${{ secrets.MODDING_API_URL }}
+      run: |
+        curl -L "$MODDING_API_URL" > api.zip
+        unzip api.zip -d ./api
+
+    - name: Check formatting
+      run: ./scripts/format --verify
+
+    - name: Build
+      run: ./scripts/build ./api
+
+    - name: Build release
+      run: |
+        mkdir ./release
+        ./scripts/build ./api ./release
