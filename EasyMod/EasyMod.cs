@@ -1,8 +1,8 @@
-﻿using Modding;
+using Modding;
 
 namespace EasyMod;
 
-public class EasyMod : Mod, ITogglableMod
+public class EasyMod : ModBase
 {
     public EasyMod() : base(nameof(EasyMod))
     {
@@ -13,13 +13,10 @@ public class EasyMod : Mod, ITogglableMod
         Log("Initializing...");
     }
 
-    public void Unload()
+    public override void Unload()
     {
         Log("Unloading...");
     }
 
-    public override string GetVersion()
-    {
-        return "0.1";
-    }
+    public override string GetVersion() => "0.1";
 }
